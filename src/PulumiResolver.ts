@@ -9,7 +9,7 @@ interface NewResolverArgs {
   readonly field: pulumi.Input<string>
   readonly kind?: pulumi.Input<string>
   readonly pipelineConfig?: pulumi.Input<aws.types.input.appsync.ResolverPipelineConfig>
-  readonly template: ResolverTemplateBuilder
+  template: ResolverTemplateBuilder
   readonly type: pulumi.Input<string>
 }
 
