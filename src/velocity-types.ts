@@ -9,5 +9,6 @@ export enum VoidType {
 type VelocityType<T> = { _velocityType: T[] | AnyType[] } | T
 
 export type VelocityString = VelocityType<string>
+export type VelocityLong = VelocityType<number>
 export type VelocityBoolean = VelocityType<boolean>
 export type VelocityObject = VelocityType<object | string>
