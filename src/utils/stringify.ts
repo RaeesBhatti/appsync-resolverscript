@@ -1,6 +1,11 @@
 // Derived from this Gist from Andrew Burgess: https://gist.github.com/andrew8088/6f53af9579266d5c62c8
 // Permission granted via email, 2019/11/05.
 
+import { VelocityBoolean, VelocityLong, VelocityString } from '../velocity-types'
+import { Mapping } from '../ResolverTemplateBuilder'
+import { UnitRequestContext } from '../UnitRequestContext'
+import { vtl } from '../VelocityFragment'
+
 const renderTab = (indent: number | undefined, depth: number): string =>
   indent !== undefined ? ' '.repeat(indent * depth) : ''
 const renderSpace = (indent?: number): string => (indent !== undefined ? ' ' : '')
@@ -10,10 +15,13 @@ const renderNewline = (indent: number | undefined, depth: number): string =>
 interface JSONSerializableObject {
   [key: string]: unknown
 }
+
 interface CustomJSONSerializableObject {
   [key: string]: unknown
+
   bypassJSON(): string
 }
+
 const isCustomJSONSerializableObject = (value: object): value is CustomJSONSerializableObject => 'bypassJSON' in value
 
 /**
@@ -25,12 +33,14 @@ const isCustomJSONSerializableObject = (value: object): value is CustomJSONSeria
  *   doesn't accept a non-numeric value.
  * @param depth the current depth of nesting when traversing through a graph of objects.
  * @param renderedObjects keeps track of objects that have already been stringified, to detect circular references.
+ * @param naked
  */
 export const stringify = (
   value: unknown,
   indent?: number,
   depth = 0,
-  renderedObjects = new WeakSet()
+  renderedObjects = new WeakSet(),
+  naked = false
 ): string | undefined => {
   switch (typeof value) {
     case 'string':
@@ -41,7 +51,7 @@ export const stringify = (
     case 'function':
       return 'null'
     case 'object':
-      return stringifyObject(value, indent, depth, renderedObjects)
+      return stringifyObject(value, indent, depth, renderedObjects, naked)
   }
 }
 
@@ -49,7 +59,8 @@ const stringifyObject = (
   object: object | null | undefined,
   indent: number | undefined,
   depth: number,
-  renderedObjects: WeakSet<object>
+  renderedObjects: WeakSet<object>,
+  naked = false
 ): string | undefined => {
   if (object === null) {
     return 'null'
@@ -74,6 +85,12 @@ const stringifyObject = (
   }
 
   const serializableObject = object as JSONSerializableObject
+  let symbolsContent = ''
+  for (const symbol of Object.getOwnPropertySymbols(serializableObject)) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    symbolsContent += stringify(serializableObject[symbol])
+  }
   const attributes = Object.keys(serializableObject)
     .map(k =>
       typeof serializableObject[k] === 'function'
@@ -86,7 +103,10 @@ const stringifyObject = (
         )}`
     )
     .filter(i => i)
-  return `{${attributes}${renderNewline(indent, depth)}}`
+  return `${!naked ? '{' : ''}${symbolsContent ? `\n${symbolsContent}` : ''}${attributes}${renderNewline(
+    indent,
+    depth
+  )}${!naked ? '}' : ''}`
 }
 
 const stringifyArray = (
@@ -99,4 +119,13 @@ const stringifyArray = (
     element => renderNewline(indent, depth + 1) + (stringify(element, indent, depth + 1, renderedObjects) || 'null')
   )
   return `[${elements.join(',')}${renderNewline(indent, depth)}]`
+}
+
+export function nullCheck (
+  condition: VelocityString | VelocityBoolean | VelocityLong,
+  content: Mapping<UnitRequestContext>
+): Mapping<UnitRequestContext> {
+  return vtl`#if(${stringify(condition)})
+    ${stringify(content, undefined, 0, new WeakSet(), true)}
+  #end`
 }

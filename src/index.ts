@@ -4,14 +4,19 @@ import { UnitResponseContext } from './UnitResponseContext'
 import * as dynamodb from './operations/dynamodb'
 import { AppSyncUtil } from './AppSyncUtil'
 import { AppSyncContext } from './AppSyncContext'
+import { resultItemsForEach } from './VelocityIterators'
 
-export { stringify } from './utils/stringify'
+export { stringify, nullCheck } from './utils/stringify'
 export { VelocityFragment, vtl } from './VelocityFragment'
 export { ResolverTemplate, ResolverTemplateBuilder } from './ResolverTemplateBuilder'
 export { PulumiResolver } from './PulumiResolver'
 
 export const operations = {
   dynamodb
+}
+
+export const language = {
+  resultItemsForEach
 }
 
 export const context = new AppSyncContext()
