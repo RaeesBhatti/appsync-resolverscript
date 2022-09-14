@@ -6,6 +6,7 @@ import { VelocityVariable } from './VelocityVariable'
 
 export class AppSyncContext extends VelocityVariable implements UnitRequestContext, UnitResponseContext {
   readonly args: VelocityMap
+  readonly source: VelocityMap
   readonly result: VelocityMap
   readonly identity: Identity
 
@@ -13,6 +14,7 @@ export class AppSyncContext extends VelocityVariable implements UnitRequestConte
     super('context')
     this.identity = new Identity(this)
     this.args = createVelocityMap('args', this)
+    this.source = createVelocityMap('source', this)
     this.result = createVelocityMap('result', this)
   }
 }
