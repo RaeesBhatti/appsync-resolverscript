@@ -1,11 +1,6 @@
 // Derived from this Gist from Andrew Burgess: https://gist.github.com/andrew8088/6f53af9579266d5c62c8
 // Permission granted via email, 2019/11/05.
 
-import { VelocityBoolean, VelocityLong, VelocityString } from '../velocity-types'
-import { Mapping } from '../ResolverTemplateBuilder'
-import { UnitRequestContext } from '../UnitRequestContext'
-import { vtl } from '../VelocityFragment'
-
 const renderTab = (indent: number | undefined, depth: number): string =>
   indent !== undefined ? ' '.repeat(indent * depth) : ''
 const renderSpace = (indent?: number): string => (indent !== undefined ? ' ' : '')
@@ -119,13 +114,4 @@ const stringifyArray = (
     element => renderNewline(indent, depth + 1) + (stringify(element, indent, depth + 1, renderedObjects) || 'null')
   )
   return `[${elements.join(',')}${renderNewline(indent, depth)}]`
-}
-
-export function nullCheck (
-  condition: VelocityString | VelocityBoolean | VelocityLong,
-  content: Mapping<UnitRequestContext>
-): Mapping<UnitRequestContext> {
-  return vtl`#if(${stringify(condition)})
-    ${stringify(content, undefined, 0, new WeakSet(), true)}
-  #end`
 }
