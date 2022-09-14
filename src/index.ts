@@ -10,7 +10,6 @@ import { nullCheck, ifElseCondition } from './VelocityCore'
 export { stringify } from './utils/stringify'
 export { VelocityFragment, vtl } from './VelocityFragment'
 export { ResolverTemplate, ResolverTemplateBuilder } from './ResolverTemplateBuilder'
-export { PulumiResolver } from './PulumiResolver'
 
 export const operations = {
   dynamodb
