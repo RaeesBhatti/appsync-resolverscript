@@ -4,7 +4,7 @@ import { UnitResponseContext } from './UnitResponseContext'
 import * as dynamodb from './operations/dynamodb'
 import { AppSyncUtil } from './AppSyncUtil'
 import { AppSyncContext } from './AppSyncContext'
-import { resultItemsForEach } from './VelocityIterators'
+import { forEach, resultItemsForEach } from './VelocityIterators'
 import { nullCheck, ifElseCondition } from './VelocityCore'
 
 export { stringify } from './utils/stringify'
@@ -16,6 +16,7 @@ export const operations = {
 }
 
 export const language = {
+  forEach,
   resultItemsForEach,
   nullCheck,
   ifElseCondition
