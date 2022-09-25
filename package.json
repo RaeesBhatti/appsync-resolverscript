@@ -1,6 +1,6 @@
 {
   "name": "appsync-resolverscript",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Write AWS appsync resolvers in JavaScript.",
   "author": "Alex McManus <me@alexmcmanus.co.uk>",
   "repository": "https://github.com/raeesbhatti/appsync-resolverscript",
