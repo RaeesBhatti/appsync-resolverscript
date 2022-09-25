@@ -9,11 +9,16 @@ import { nullCheck, ifElseCondition } from './VelocityCore'
 
 export { stringify } from './utils/stringify'
 export { VelocityFragment, vtl } from './VelocityFragment'
+export { VelocityMap } from './VelocityMap'
+export { VelocityVariable } from './VelocityVariable'
+export { IdentityBase } from './Identity'
 export { ResolverTemplate, ResolverTemplateBuilder } from './ResolverTemplateBuilder'
 
 export const operations = {
   dynamodb
 }
+
+export { UnitResponseContext, UnitRequestContext }
 
 export const language = {
   forEach,
