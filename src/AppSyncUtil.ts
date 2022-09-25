@@ -10,6 +10,29 @@ export class AppSyncUtil {
 
   time = new Time()
 
+  autoUlid = (): VelocityFragment<boolean> => vtl`$util.autoUlid()`
+
+  autoKsuid = (): VelocityFragment<boolean> => vtl`$util.autoKsuid()`
+
+  error = (value: VelocityString): VelocityFragment<void> => vtl`$util.error(${stringify(value)})`
+
+  errorWithErrorType = (value: VelocityString, type: VelocityString): VelocityFragment<void> =>
+    vtl`$util.error(${stringify(value)}, ${stringify(type)})`
+
+  errorWithErrorTypeAndData = (
+    value: VelocityString,
+    type: VelocityString,
+    data: VelocityObject
+  ): VelocityFragment<void> => vtl`$util.error(${stringify(value)}, ${stringify(type)}, ${stringify(data)})`
+
+  errorWithErrorTypeAndDataAndErrorInfo = (
+    value: VelocityString,
+    type: VelocityString,
+    data: VelocityObject,
+    errorInfo: VelocityObject
+  ): VelocityFragment<void> =>
+    vtl`$util.error(${stringify(value)}, ${stringify(type)}, ${stringify(data)}, ${stringify(errorInfo)})`
+
   isList = (value: VelocityObject): VelocityFragment<boolean> => vtl`$util.isList(${stringify(value)})`
 
   isString = (value: VelocityObject): VelocityFragment<boolean> => vtl`$util.isString(${stringify(value)})`
@@ -20,6 +43,9 @@ export class AppSyncUtil {
 
   defaultIfNull = (value: VelocityObject, defaultValue: VelocityObject): VelocityObject =>
     vtl`$util.defaultIfNull(${stringify(value)}, ${stringify(defaultValue)})`
+
+  defaultIfNullOrBlank = (value: VelocityObject, defaultValue: VelocityObject): VelocityObject =>
+    vtl`$util.defaultIfNullOrBlank(${stringify(value)}, ${stringify(defaultValue)})`
 
   unauthorized = (): VelocityFragment<VoidType> => vtl`$util.unauthorized()`
 
