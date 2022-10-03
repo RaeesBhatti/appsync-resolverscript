@@ -6,10 +6,11 @@ import { stringify } from './utils/stringify'
 
 export function nullCheck (
   condition: VelocityString | VelocityBoolean | VelocityLong,
-  content: Mapping<UnitRequestContext>
+  content: Mapping<UnitRequestContext>,
+  endWithComma = false
 ): Mapping<UnitRequestContext> {
   return vtl`#if(${stringify(condition)})
-    ${stringify(content, undefined, 0, new WeakSet(), true)}
+    ${stringify(content, undefined, 0, new WeakSet(), true)}${endWithComma ? ',' : ''}
   #end`
 }
 
