@@ -7,7 +7,7 @@ import { stringify } from './utils/stringify'
 export function nullCheck (
   condition: VelocityString | VelocityBoolean | VelocityLong,
   content: Mapping<UnitRequestContext>,
-  endWithComma = false
+  endWithComma = true
 ): Mapping<UnitRequestContext> {
   return vtl`#if(${stringify(condition)})
     ${stringify(content, undefined, 0, new WeakSet(), true)}${endWithComma ? ',' : ''}
