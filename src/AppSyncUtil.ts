@@ -8,6 +8,8 @@ export class AppSyncUtil {
 
   str = new Str()
 
+  arraySize = (value: VelocityObject): VelocityFragment<VelocityLong> => vtl`${stringify(value)}.size()`
+
   time = new Time()
 
   autoUlid = (): VelocityFragment<boolean> => vtl`$util.autoUlid()`
